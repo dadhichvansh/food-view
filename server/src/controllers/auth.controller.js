@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import FoodPartner from '../models/foodPartner.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -90,7 +91,7 @@ export async function loginUser(req, res) {
 }
 
 // Logout a user, method: GET /api/auth/user/logout
-export async function logoutUser(req, res) {
+export function logoutUser(req, res) {
   try {
     // Clear the token cookie & send response
     res.clearCookie('token');
@@ -100,6 +101,119 @@ export async function logoutUser(req, res) {
     });
   } catch (error) {
     console.error('Error in logoutUser():', error);
+    return res.status(500).json({
+      ok: false,
+      message: 'Internal server error',
+    });
+  }
+}
+
+// Register a new food partner, method: POST /api/auth/food-partner/register
+export async function registerFoodPartner(req, res) {
+  try {
+    // Extract food partner details from request body
+    const { name, email, password } = req.body;
+
+    // Check if food partner already exists
+    const foodPartnerAlreadyExists = await FoodPartner.findOne({ email });
+    if (foodPartnerAlreadyExists) {
+      return res.status(400).json({
+        ok: false,
+        message: 'Food partner already exists',
+      });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new food partner
+    const foodPartner = await FoodPartner.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    // Generate JWT token
+    const token = jwt.sign({ id: foodPartner._id }, process.env.JWT_SECRET);
+
+    // Send token and food partner details in response
+    res.cookie('token', token);
+    res.status(201).json({
+      ok: true,
+      message: 'Food partner registered successfully',
+      foodPartner: {
+        id: foodPartner._id,
+        name: foodPartner.name,
+        email: foodPartner.email,
+      },
+    });
+  } catch (error) {
+    console.error('Error in registerFoodPartner():', error);
+    return res.status(500).json({
+      ok: false,
+      message: 'Internal server error',
+    });
+  }
+}
+
+// Login an existing food partner, method: POST /api/auth/food-partner/login
+export async function loginFoodPartner(req, res) {
+  try {
+    // Extract food partner credentials from request body
+    const { email, password } = req.body;
+
+    // Find food partner by email
+    const foodPartner = await FoodPartner.findOne({ email });
+    if (!foodPartner) {
+      return res.status(400).json({
+        ok: false,
+        message: 'Invalid email or password',
+      });
+    }
+
+    // Compare passwords
+    const isMatch = await bcrypt.compare(password, foodPartner.password);
+    if (!isMatch) {
+      return res.status(400).json({
+        ok: false,
+        message: 'Invalid email or password',
+      });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ id: foodPartner._id }, process.env.JWT_SECRET);
+
+    // Send token and food partner details in response
+    res.cookie('token', token);
+    res.status(200).json({
+      ok: true,
+      message: 'Food partner logged in successfully',
+      foodPartner: {
+        id: foodPartner._id,
+        name: foodPartner.name,
+        email: foodPartner.email,
+      },
+    });
+  } catch (error) {
+    console.error('Error in loginFoodPartner():', error);
+    return res.status(500).json({
+      ok: false,
+      message: 'Internal server error',
+    });
+  }
+}
+
+// Logout a food partner, method: GET /api/auth/food-partner/logout
+export function logoutFoodPartner(req, res) {
+  try {
+    // Clear the token cookie & send response
+    res.clearCookie('token');
+    res.status(200).json({
+      ok: true,
+      message: 'Food partner logged out successfully',
+    });
+  } catch (error) {
+    console.error('Error in logoutFoodPartner():', error);
     return res.status(500).json({
       ok: false,
       message: 'Internal server error',
