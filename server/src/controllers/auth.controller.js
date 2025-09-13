@@ -112,7 +112,7 @@ export function logoutUser(req, res) {
 export async function registerFoodPartner(req, res) {
   try {
     // Extract food partner details from request body
-    const { name, email, password } = req.body;
+    const { name, contactName, phone, address, email, password } = req.body;
 
     // Check if food partner already exists
     const foodPartnerAlreadyExists = await FoodPartner.findOne({ email });
@@ -129,6 +129,9 @@ export async function registerFoodPartner(req, res) {
     // Create a new food partner
     const foodPartner = await FoodPartner.create({
       name,
+      contactName,
+      phone,
+      address,
       email,
       password: hashedPassword,
     });
@@ -144,6 +147,9 @@ export async function registerFoodPartner(req, res) {
       foodPartner: {
         id: foodPartner._id,
         name: foodPartner.name,
+        contactName: foodPartner.contactName,
+        phone: foodPartner.phone,
+        address: foodPartner.address,
         email: foodPartner.email,
       },
     });
