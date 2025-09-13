@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 import { uploadFile } from '../services/storage.service.js';
 import FoodItem from '../models/foodItem.model.js';
 
+// Create a new food item, method: POST /api/food
 export async function createFoodItem(req, res) {
   try {
     const { name, description } = req.body;
@@ -24,6 +25,22 @@ export async function createFoodItem(req, res) {
     res.status(500).json({
       ok: false,
       message: 'Failed to create food item',
+    });
+  }
+}
+
+export async function getFoodItems(req, res) {
+  try {
+    const foodItems = await FoodItem.find();
+    res.status(200).json({
+      ok: true,
+      foodItems,
+    });
+  } catch (error) {
+    console.error('Error in getFoodItems():', error);
+    res.status(500).json({
+      ok: false,
+      message: 'Failed to fetch food items',
     });
   }
 }
