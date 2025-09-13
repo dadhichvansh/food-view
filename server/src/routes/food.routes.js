@@ -1,18 +1,27 @@
 import express from 'express';
 import multer from 'multer';
-import { createFoodItem } from '../controllers/food.controller.js';
-import { authFoodPartnerMiddleware } from '../middlewares/auth.middleware.js';
+import {
+  createFoodItem,
+  getFoodItems,
+} from '../controllers/food.controller.js';
+import {
+  authFoodPartnerMiddleware,
+  authUserMiddleware,
+} from '../middlewares/auth.middleware.js';
 
 const upload = multer({ storage: multer.memoryStorage() });
 
 const router = express.Router();
 
-// Create a new food item (protected route)
+// POST /api/food [protected]
 router.post(
   '/',
   authFoodPartnerMiddleware,
   upload.single('video'),
   createFoodItem
 );
+
+// GET /api/food [protected]
+router.get('/', authUserMiddleware, getFoodItems);
 
 export default router;
