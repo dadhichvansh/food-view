@@ -1,6 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.routes.js';
+import foodRoutes from './routes/food.routes.js';
 
 // Initialize express app
 const app = express();
@@ -19,5 +20,8 @@ app.get('/', (req, res) => {
 
 // Auth routes
 app.use('/api/auth', authRoutes);
+
+// Food routes
+app.use('/api/food', foodRoutes);
 
 export default app;
