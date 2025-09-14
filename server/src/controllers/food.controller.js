@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 import { uploadFile } from '../services/storage.service.js';
 import FoodItem from '../models/foodItem.model.js';
 import Like from '../models/likes.model.js';
+import Save from '../models/save.model.js';
 
 // Create a new food item, method: POST /api/food
 export async function createFoodItem(req, res) {
@@ -93,6 +94,50 @@ export async function likeFoodItem(req, res) {
     res.status(500).json({
       ok: false,
       message: 'Failed to like food item',
+    });
+  }
+}
+
+// Save a food item, method: POST /api/food/save
+export async function saveFoodItem(req, res) {
+  try {
+    const { foodItemId } = req.body;
+    const user = req.user;
+
+    // Check if the food item exists
+    const foodItem = await FoodItem.findById(foodItemId);
+    if (!foodItem) {
+      return res.status(404).json({
+        ok: false,
+        message: 'Food item not found',
+      });
+    }
+
+    // Check if the user has already saved the food item
+    const existingSave = await Save.findOne({
+      user: user._id,
+      food: foodItemId,
+    });
+    if (existingSave) {
+      await Save.deleteOne({ user: user._id, food: foodItemId });
+      return res.status(200).json({
+        ok: true,
+        message: 'Food item unsaved successfully',
+      });
+    }
+
+    // Create a new save
+    const save = await Save.create({ user: user._id, food: foodItemId });
+    res.status(201).json({
+      ok: true,
+      message: 'Food item saved successfully',
+      save,
+    });
+  } catch (error) {
+    console.error('Error in saveFoodItem():', error);
+    res.status(500).json({
+      ok: false,
+      message: 'Failed to save food item',
     });
   }
 }
