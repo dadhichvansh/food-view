@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import authRoutes from './routes/auth.routes.js';
 import foodRoutes from './routes/food.routes.js';
+import foodPartnerRoutes from './routes/foodPartner.routes.js';
 
 // Initialize express app
 const app = express();
@@ -32,5 +33,8 @@ app.use('/api/auth', authRoutes);
 
 // Food routes
 app.use('/api/food', foodRoutes);
+
+// Food partner routes
+app.use('/api/food-partner', foodPartnerRoutes);
 
 export default app;
