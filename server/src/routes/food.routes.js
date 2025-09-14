@@ -27,4 +27,7 @@ router.get('/', authUserMiddleware, getFoodItems);
 // POST /api/food/like [protected]
 router.post('/like', authUserMiddleware, likeFoodItem);
 
+// POST /api/food/save [protected]
+router.post('/save', authUserMiddleware, saveFoodItem);
+
 export default router;
