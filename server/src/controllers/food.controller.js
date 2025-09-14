@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import { uploadFile } from '../services/storage.service.js';
 import FoodItem from '../models/foodItem.model.js';
+import Like from '../models/likes.model.js';
 
 // Create a new food item, method: POST /api/food
 export async function createFoodItem(req, res) {
@@ -29,6 +30,7 @@ export async function createFoodItem(req, res) {
   }
 }
 
+// Get all food items, method: GET /api/food
 export async function getFoodItems(req, res) {
   try {
     const foodItems = await FoodItem.find();
@@ -41,6 +43,56 @@ export async function getFoodItems(req, res) {
     res.status(500).json({
       ok: false,
       message: 'Failed to fetch food items',
+    });
+  }
+}
+
+// Like a food item, method: POST /api/food/like
+export async function likeFoodItem(req, res) {
+  try {
+    const { foodItemId } = req.body;
+    const user = req.user;
+
+    // Check if the food item exists
+    const foodItem = await FoodItem.findById(foodItemId);
+    if (!foodItem) {
+      return res.status(404).json({
+        ok: false,
+        message: 'Food item not found',
+      });
+    }
+
+    // Check if the user has already liked the food item
+    const existingLike = await Like.findOne({
+      user: user._id,
+      food: foodItemId,
+    });
+    if (existingLike) {
+      await Like.deleteOne({ user: user._id, food: foodItemId });
+      await FoodItem.findByIdAndUpdate(foodItemId, {
+        $inc: { likesCount: -1 },
+      });
+      return res.status(200).json({
+        ok: true,
+        message: 'Food item unliked successfully',
+      });
+    }
+
+    // Create a new like
+    const like = await Like.create({ user: user._id, food: foodItemId });
+    await FoodItem.findByIdAndUpdate(foodItemId, {
+      $inc: { likesCount: 1 },
+    });
+    res.status(201).json({
+      ok: true,
+      message: 'Food item liked successfully',
+      like,
+    });
+  } catch (error) {
+    console.error('Error in likeFoodItem():', error);
+    res.status(500).json({
+      ok: false,
+      message: 'Failed to like food item',
     });
   }
 }
