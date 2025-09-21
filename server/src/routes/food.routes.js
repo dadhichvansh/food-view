@@ -3,6 +3,8 @@ import multer from 'multer';
 import {
   createFoodItem,
   getFoodItems,
+  likeFoodItem,
+  saveFoodItem,
 } from '../controllers/food.controller.js';
 import {
   authFoodPartnerMiddleware,
