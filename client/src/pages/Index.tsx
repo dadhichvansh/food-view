@@ -188,7 +188,7 @@ const Index = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary px-8"
+                className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary px-8 text-black"
               >
                 Become a Partner
               </Button>
