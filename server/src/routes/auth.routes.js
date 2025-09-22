@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutFoodPartner,
   logoutUser,
+  me,
   registerFoodPartner,
   registerUser,
 } from '../controllers/auth.controller.js';
@@ -20,5 +21,7 @@ router.get('/user/logout', logoutUser);
 router.post('/food-partner/register', registerFoodPartner);
 router.post('/food-partner/login', loginFoodPartner);
 router.get('/food-partner/logout', logoutFoodPartner);
+
+router.get('/me', me)
 
 export default router;

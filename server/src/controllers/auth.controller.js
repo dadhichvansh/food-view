@@ -3,6 +3,13 @@ import FoodPartner from '../models/foodPartner.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  maxAge: 24 * 60 * 60 * 1000, // 1 day (adjust as you need)
+};
+
 // Register a new user, method: POST /api/auth/user/register
 export async function registerUser(req, res) {
   try {
@@ -32,7 +39,7 @@ export async function registerUser(req, res) {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
     // Send token and user details in response
-    res.cookie('token', token);
+    res.cookie('token', token, cookieOptions);
     res.status(201).json({
       ok: true,
       message: 'User registered successfully',
@@ -75,7 +82,7 @@ export async function loginUser(req, res) {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
     // Send token and user details in response
-    res.cookie('token', token);
+    res.cookie('token', token, cookieOptions);
     res.status(200).json({
       ok: true,
       message: 'User logged in successfully',
@@ -94,7 +101,7 @@ export async function loginUser(req, res) {
 export function logoutUser(req, res) {
   try {
     // Clear the token cookie & send response
-    res.clearCookie('token');
+    res.clearCookie('token', cookieOptions);
     res.status(200).json({
       ok: true,
       message: 'User logged out successfully',
@@ -112,7 +119,15 @@ export function logoutUser(req, res) {
 export async function registerFoodPartner(req, res) {
   try {
     // Extract food partner details from request body
-    const { name, contactName, phone, address, email, password } = req.body;
+    const {
+      name,
+      restaurantName,
+      description,
+      phone,
+      address,
+      email,
+      password,
+    } = req.body;
 
     // Check if food partner already exists
     const foodPartnerAlreadyExists = await FoodPartner.findOne({ email });
@@ -128,8 +143,9 @@ export async function registerFoodPartner(req, res) {
 
     // Create a new food partner
     const foodPartner = await FoodPartner.create({
-      name,
-      contactName,
+      ownerName: name,
+      restaurantName,
+      restaurantDescription: description,
       phone,
       address,
       email,
@@ -140,7 +156,7 @@ export async function registerFoodPartner(req, res) {
     const token = jwt.sign({ id: foodPartner._id }, process.env.JWT_SECRET);
 
     // Send token and food partner details in response
-    res.cookie('token', token);
+    res.cookie('token', token, cookieOptions);
     res.status(201).json({
       ok: true,
       message: 'Food partner registered successfully',
@@ -190,7 +206,7 @@ export async function loginFoodPartner(req, res) {
     const token = jwt.sign({ id: foodPartner._id }, process.env.JWT_SECRET);
 
     // Send token and food partner details in response
-    res.cookie('token', token);
+    res.cookie('token', token, cookieOptions);
     res.status(200).json({
       ok: true,
       message: 'Food partner logged in successfully',
@@ -213,7 +229,7 @@ export async function loginFoodPartner(req, res) {
 export function logoutFoodPartner(req, res) {
   try {
     // Clear the token cookie & send response
-    res.clearCookie('token');
+    res.clearCookie('token', cookieOptions);
     res.status(200).json({
       ok: true,
       message: 'Food partner logged out successfully',
@@ -224,5 +240,32 @@ export function logoutFoodPartner(req, res) {
       ok: false,
       message: 'Internal server error',
     });
+  }
+}
+
+export async function me(req, res) {
+  try {
+    const token = req.cookies?.token;
+    if (!token) {
+      // not logged in
+      return res.status(200).json({ ok: true, user: null });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findById(decoded.id).select('-password').lean();
+    if (user) {
+      return res.json({ ok: true, user });
+    }
+
+    const partner = await FoodPartner.findById(decoded.id).lean();
+    if (partner) {
+      return res.json({ ok: true, user: { ...partner, role: 'partner' } });
+    }
+
+    return res.status(401).json({ ok: false, message: 'Unauthorized' });
+  } catch (err) {
+    console.error('Error in me():', err);
+    return res.status(401).json({ ok: false, message: 'Unauthorized' });
   }
 }
