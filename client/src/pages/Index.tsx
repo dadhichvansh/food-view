@@ -141,7 +141,7 @@ const Index = () => {
       <section className="py-20 bg-muted/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Why Choose FoodieHub?</h2>
+            <h2 className="text-4xl font-bold mb-4">Why Choose FoodView?</h2>
             <p className="text-xl text-muted-foreground">
               Experience the best food delivery service in your city
             </p>
@@ -175,7 +175,7 @@ const Index = () => {
             Ready to Start Ordering?
           </h2>
           <p className="text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
-            Join thousands of satisfied customers who trust FoodieHub for their
+            Join thousands of satisfied customers who trust FoodView for their
             daily meals
           </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
@@ -206,7 +206,7 @@ const Index = () => {
               <span className="text-xl font-bold">FoodView</span>
             </div>
             <p className="text-muted-foreground">
-              &copy; 2024 FoodView. All rights reserved.
+              &copy; 2025 FoodView. All rights reserved.
             </p>
           </div>
         </div>
