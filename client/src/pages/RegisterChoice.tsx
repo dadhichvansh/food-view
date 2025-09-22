@@ -1,14 +1,23 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link } from "react-router-dom";
-import { ArrowLeft, Users, Store, Truck, Star } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Link } from 'react-router-dom';
+import { ArrowLeft, Users, Store, Truck, Star } from 'lucide-react';
 
 const RegisterChoice = () => {
   return (
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
       <div className="w-full max-w-4xl">
         <div className="mb-8 text-center">
-          <Link to="/" className="inline-flex items-center text-primary-foreground hover:opacity-80 mb-6">
+          <Link
+            to="/"
+            className="inline-flex items-center text-primary-foreground hover:opacity-80 mb-6"
+          >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
@@ -17,8 +26,12 @@ const RegisterChoice = () => {
               <div className="h-8 w-8 rounded bg-gradient-secondary"></div>
             </div>
           </div>
-          <h1 className="text-4xl font-bold text-primary-foreground mb-2">Join FoodieHub</h1>
-          <p className="text-primary-foreground/80 text-lg">Choose how you'd like to be part of our community</p>
+          <h1 className="text-4xl font-bold text-primary-foreground mb-2">
+            Join FoodView
+          </h1>
+          <p className="text-primary-foreground/80 text-lg">
+            Choose how you'd like to be part of our community
+          </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -93,8 +106,11 @@ const RegisterChoice = () => {
 
         <div className="mt-8 text-center">
           <p className="text-primary-foreground/80">
-            Already have an account?{" "}
-            <Link to="/login" className="text-primary-foreground font-medium hover:underline">
+            Already have an account?{' '}
+            <Link
+              to="/login"
+              className="text-primary-foreground font-medium hover:underline"
+            >
               Sign in here
             </Link>
           </p>

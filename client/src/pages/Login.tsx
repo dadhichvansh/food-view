@@ -1,34 +1,41 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Login = () => {
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [err, setErr] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock login - in real app, this would connect to backend
-    if (email && password) {
-      toast({
-        title: "Welcome back!",
-        description: "Login successful. Redirecting to dashboard...",
-      });
-      setTimeout(() => navigate("/dashboard"), 1500);
-    } else {
-      toast({
-        title: "Error",
-        description: "Please fill in all fields",
-        variant: "destructive",
-      });
+
+    setErr(null);
+    setLoading(true);
+
+    try {
+      await login(email, password);
+    } catch (error) {
+      setErr(error?.response?.data?.message || 'Login failed');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,7 +43,10 @@ const Login = () => {
     <div className="min-h-screen bg-gradient-hero flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <Link to="/" className="inline-flex items-center text-primary-foreground hover:opacity-80 mb-6">
+          <Link
+            to="/"
+            className="inline-flex items-center text-primary-foreground hover:opacity-80 mb-6"
+          >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
           </Link>
@@ -45,14 +55,20 @@ const Login = () => {
               <div className="h-8 w-8 rounded bg-gradient-secondary"></div>
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-primary-foreground mb-2">Welcome Back</h1>
-          <p className="text-primary-foreground/80">Sign in to your FoodieHub account</p>
+          <h1 className="text-3xl font-bold text-primary-foreground mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-primary-foreground/80">
+            Sign in to your FoodView account
+          </p>
         </div>
 
         <Card className="bg-card/95 backdrop-blur border-0 shadow-2xl">
           <CardHeader className="text-center pb-6">
             <CardTitle className="text-2xl">Sign In</CardTitle>
-            <CardDescription>Enter your credentials to access your account</CardDescription>
+            <CardDescription>
+              Enter your credentials to access your account
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-6">
@@ -74,7 +90,7 @@ const Login = () => {
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -105,7 +121,10 @@ const Login = () => {
               </Button>
 
               <div className="text-center space-y-2">
-                <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+                <Link
+                  to="/forgot-password"
+                  className="text-sm text-primary hover:underline"
+                >
                   Forgot your password?
                 </Link>
               </div>
@@ -113,8 +132,11 @@ const Login = () => {
 
             <div className="mt-6 pt-6 border-t text-center">
               <p className="text-sm text-muted-foreground">
-                Don't have an account?{" "}
-                <Link to="/register" className="text-primary font-medium hover:underline">
+                Don't have an account?{' '}
+                <Link
+                  to="/register"
+                  className="text-primary font-medium hover:underline"
+                >
                   Create one here
                 </Link>
               </p>

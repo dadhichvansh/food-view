@@ -1,33 +1,33 @@
-import { useState, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { 
-  Heart, 
-  MessageCircle, 
-  Share, 
-  Bookmark, 
+import { useState, useEffect, useRef } from 'react';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Heart,
+  MessageCircle,
+  Share,
+  Bookmark,
   MoreHorizontal,
   ArrowLeft,
   Send,
   User,
   Play,
   Volume2,
-  VolumeX
-} from "lucide-react";
-import { Link } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+  VolumeX,
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 const Reels = () => {
   const { toast } = useToast();
   const [activeReel, setActiveReel] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
-  const [commentInput, setCommentInput] = useState("");
+  const [commentInput, setCommentInput] = useState('');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   // Touch and scroll handling
   const touchStartY = useRef(0);
   const touchEndY = useRef(0);
@@ -44,7 +44,7 @@ const Reels = () => {
 
   const handleTouchEnd = () => {
     if (!touchStartY.current || !touchEndY.current) return;
-    
+
     const distance = touchStartY.current - touchEndY.current;
     const minDistance = 50;
 
@@ -65,7 +65,7 @@ const Reels = () => {
   // Handle mouse wheel scrolling
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
-    
+
     if (isScrolling.current) return;
     isScrolling.current = true;
 
@@ -122,41 +122,78 @@ const Reels = () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [activeReel]);
-  
-  const [reelInteractions, setReelInteractions] = useState<{[key: number]: {
-    liked: boolean;
-    saved: boolean;
-    likes: number;
-    comments: Array<{id: number; user: string; text: string; time: string}>;
-  }}>({
-    0: { 
-      liked: false, 
-      saved: false, 
-      likes: 1240, 
+
+  const [reelInteractions, setReelInteractions] = useState<{
+    [key: number]: {
+      liked: boolean;
+      saved: boolean;
+      likes: number;
+      comments: Array<{ id: number; user: string; text: string; time: string }>;
+    };
+  }>({
+    0: {
+      liked: false,
+      saved: false,
+      likes: 1240,
       comments: [
-        {id: 1, user: "foodie_lover", text: "This looks absolutely delicious! 😍", time: "2h"},
-        {id: 2, user: "chef_mike", text: "Great plating technique!", time: "1h"},
-        {id: 3, user: "hungry_student", text: "I need this recipe ASAP", time: "30m"},
-      ]
+        {
+          id: 1,
+          user: 'foodie_lover',
+          text: 'This looks absolutely delicious! 😍',
+          time: '2h',
+        },
+        {
+          id: 2,
+          user: 'chef_mike',
+          text: 'Great plating technique!',
+          time: '1h',
+        },
+        {
+          id: 3,
+          user: 'hungry_student',
+          text: 'I need this recipe ASAP',
+          time: '30m',
+        },
+      ],
     },
-    1: { 
-      liked: true, 
-      saved: false, 
-      likes: 856, 
+    1: {
+      liked: true,
+      saved: false,
+      likes: 856,
       comments: [
-        {id: 1, user: "pizza_fanatic", text: "Best pizza in town! 🍕", time: "3h"},
-        {id: 2, user: "local_foodie", text: "Their margherita is amazing too", time: "2h"},
-      ]
+        {
+          id: 1,
+          user: 'pizza_fanatic',
+          text: 'Best pizza in town! 🍕',
+          time: '3h',
+        },
+        {
+          id: 2,
+          user: 'local_foodie',
+          text: 'Their margherita is amazing too',
+          time: '2h',
+        },
+      ],
     },
-    2: { 
-      liked: false, 
-      saved: true, 
-      likes: 2100, 
+    2: {
+      liked: false,
+      saved: true,
+      likes: 2100,
       comments: [
-        {id: 1, user: "sushi_master", text: "Perfect knife work! 👨‍🍳", time: "4h"},
-        {id: 2, user: "fish_lover", text: "That salmon looks so fresh", time: "2h"},
-        {id: 3, user: "tokyo_eats", text: "Reminds me of Tokyo!", time: "1h"},
-      ]
+        {
+          id: 1,
+          user: 'sushi_master',
+          text: 'Perfect knife work! 👨‍🍳',
+          time: '4h',
+        },
+        {
+          id: 2,
+          user: 'fish_lover',
+          text: 'That salmon looks so fresh',
+          time: '2h',
+        },
+        { id: 3, user: 'tokyo_eats', text: 'Reminds me of Tokyo!', time: '1h' },
+      ],
     },
   });
 
@@ -164,67 +201,76 @@ const Reels = () => {
     {
       id: 0,
       restaurant: "Mama's Kitchen",
-      dish: "Truffle Pasta",
-      description: "Watch our chef create magic with fresh truffle and homemade pasta 🍝✨ #TrufflePasta #FreshMade #ChefSpecial",
-      avatar: "/placeholder.svg",
-      thumbnail: "🍝",
+      dish: 'Truffle Pasta',
+      description:
+        'Watch our chef create magic with fresh truffle and homemade pasta 🍝✨ #TrufflePasta #FreshMade #ChefSpecial',
+      avatar: '/placeholder.svg',
+      thumbnail: '🍝',
       verified: true,
     },
     {
       id: 1,
-      restaurant: "Pizza Palace",
-      dish: "Wood-Fired Pizza",
-      description: "Nothing beats the taste of authentic wood-fired pizza! 🍕🔥 Our dough is made fresh daily #WoodFired #AuthenticPizza #FreshDough",
-      avatar: "/placeholder.svg",
-      thumbnail: "🍕",
+      restaurant: 'Pizza Palace',
+      dish: 'Wood-Fired Pizza',
+      description:
+        'Nothing beats the taste of authentic wood-fired pizza! 🍕🔥 Our dough is made fresh daily #WoodFired #AuthenticPizza #FreshDough',
+      avatar: '/placeholder.svg',
+      thumbnail: '🍕',
       verified: true,
     },
     {
       id: 2,
-      restaurant: "Sakura Sushi",
-      dish: "Fresh Sashimi",
-      description: "The art of sashimi - watch our master chef prepare the freshest catch 🍣🎌 #Sashimi #FreshFish #SushiArt #JapaneseFood",
-      avatar: "/placeholder.svg",
-      thumbnail: "🍣",
+      restaurant: 'Sakura Sushi',
+      dish: 'Fresh Sashimi',
+      description:
+        'The art of sashimi - watch our master chef prepare the freshest catch 🍣🎌 #Sashimi #FreshFish #SushiArt #JapaneseFood',
+      avatar: '/placeholder.svg',
+      thumbnail: '🍣',
       verified: false,
     },
   ];
 
   const handleLike = (reelId: number) => {
-    setReelInteractions(prev => ({
+    setReelInteractions((prev) => ({
       ...prev,
       [reelId]: {
         ...prev[reelId],
         liked: !prev[reelId].liked,
-        likes: prev[reelId].liked ? prev[reelId].likes - 1 : prev[reelId].likes + 1
-      }
+        likes: prev[reelId].liked
+          ? prev[reelId].likes - 1
+          : prev[reelId].likes + 1,
+      },
     }));
-    
+
     toast({
-      title: reelInteractions[reelId]?.liked ? "Unliked" : "Liked!",
-      description: reelInteractions[reelId]?.liked ? "Removed from favorites" : "Added to your favorites",
+      title: reelInteractions[reelId]?.liked ? 'Unliked' : 'Liked!',
+      description: reelInteractions[reelId]?.liked
+        ? 'Removed from favorites'
+        : 'Added to your favorites',
     });
   };
 
   const handleSave = (reelId: number) => {
-    setReelInteractions(prev => ({
+    setReelInteractions((prev) => ({
       ...prev,
       [reelId]: {
         ...prev[reelId],
-        saved: !prev[reelId].saved
-      }
+        saved: !prev[reelId].saved,
+      },
     }));
-    
+
     toast({
-      title: reelInteractions[reelId]?.saved ? "Unsaved" : "Saved!",
-      description: reelInteractions[reelId]?.saved ? "Removed from saved reels" : "Added to saved reels",
+      title: reelInteractions[reelId]?.saved ? 'Unsaved' : 'Saved!',
+      description: reelInteractions[reelId]?.saved
+        ? 'Removed from saved reels'
+        : 'Added to saved reels',
     });
   };
 
   const handleComment = (reelId: number) => {
     if (!commentInput.trim()) return;
-    
-    setReelInteractions(prev => ({
+
+    setReelInteractions((prev) => ({
       ...prev,
       [reelId]: {
         ...prev[reelId],
@@ -232,26 +278,31 @@ const Reels = () => {
           ...prev[reelId].comments,
           {
             id: Date.now(),
-            user: "you",
+            user: 'you',
             text: commentInput,
-            time: "now"
-          }
-        ]
-      }
+            time: 'now',
+          },
+        ],
+      },
     }));
-    
-    setCommentInput("");
+
+    setCommentInput('');
     toast({
-      title: "Comment Added!",
-      description: "Your comment has been posted",
+      title: 'Comment Added!',
+      description: 'Your comment has been posted',
     });
   };
 
   const currentReel = reels[activeReel];
-  const currentInteractions = reelInteractions[activeReel] || { liked: false, saved: false, likes: 0, comments: [] };
+  const currentInteractions = reelInteractions[activeReel] || {
+    liked: false,
+    saved: false,
+    likes: 0,
+    comments: [],
+  };
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="min-h-screen bg-black relative overflow-hidden"
       onTouchStart={handleTouchStart}
@@ -261,14 +312,22 @@ const Reels = () => {
     >
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-4 bg-gradient-to-b from-black/50 to-transparent">
-        <Link to="/dashboard">
-          <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+        <Link to="/">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-white hover:bg-white/20"
+          >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
         </Link>
         <h1 className="text-white font-semibold">Food Reels</h1>
-        <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-white hover:bg-white/20"
+        >
           <MoreHorizontal className="w-5 h-5" />
         </Button>
       </header>
@@ -281,16 +340,23 @@ const Reels = () => {
             <div
               key={reel.id}
               className={`absolute inset-0 transition-transform duration-300 ease-out ${
-                index === activeReel 
-                  ? 'translate-y-0' 
-                  : index < activeReel 
-                    ? '-translate-y-full' 
-                    : 'translate-y-full'
-              } ${isTransitioning ? 'scale-95 opacity-80' : 'scale-100 opacity-100'}`}
-              style={{ 
+                index === activeReel
+                  ? 'translate-y-0'
+                  : index < activeReel
+                  ? '-translate-y-full'
+                  : 'translate-y-full'
+              } ${
+                isTransitioning
+                  ? 'scale-95 opacity-80'
+                  : 'scale-100 opacity-100'
+              }`}
+              style={{
                 zIndex: index === activeReel ? 10 : 1,
-                transform: `translateY(${(index - activeReel) * 100}%) ${isTransitioning ? 'scale(0.95)' : 'scale(1)'}`,
-                transition: 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.2s ease'
+                transform: `translateY(${(index - activeReel) * 100}%) ${
+                  isTransitioning ? 'scale(0.95)' : 'scale(1)'
+                }`,
+                transition:
+                  'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.2s ease',
               }}
             >
               <div className="flex-1 relative bg-gradient-to-br from-orange-900 via-red-900 to-yellow-900 flex items-center justify-center h-full">
@@ -300,12 +366,12 @@ const Reels = () => {
                   </div>
                   <div className="absolute inset-0 bg-gradient-overlay"></div>
                 </div>
-                
+
                 {/* Play Button */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     className="text-white/80 hover:text-white hover:bg-white/10 rounded-full w-20 h-20"
                   >
                     <Play className="w-8 h-8 fill-current" />
@@ -319,7 +385,11 @@ const Reels = () => {
                   className="absolute bottom-20 left-4 text-white hover:bg-white/20 rounded-full w-10 h-10"
                   onClick={() => setIsMuted(!isMuted)}
                 >
-                  {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                  {isMuted ? (
+                    <VolumeX className="w-5 h-5" />
+                  ) : (
+                    <Volume2 className="w-5 h-5" />
+                  )}
                 </Button>
 
                 {/* Bottom Content for this reel */}
@@ -333,9 +403,14 @@ const Reels = () => {
                     </Avatar>
                     <div className="flex-1">
                       <div className="flex items-center space-x-2">
-                        <h3 className="text-white font-semibold">{reel.restaurant}</h3>
+                        <h3 className="text-white font-semibold">
+                          {reel.restaurant}
+                        </h3>
                         {reel.verified && (
-                          <Badge variant="secondary" className="bg-blue-600 text-white border-0">
+                          <Badge
+                            variant="secondary"
+                            className="bg-blue-600 text-white border-0"
+                          >
                             ✓
                           </Badge>
                         )}
@@ -346,7 +421,7 @@ const Reels = () => {
                       Follow
                     </Button>
                   </div>
-                  
+
                   <p className="text-white text-sm mb-4 leading-relaxed">
                     {reel.description}
                   </p>
@@ -360,7 +435,9 @@ const Reels = () => {
                           value={commentInput}
                           onChange={(e) => setCommentInput(e.target.value)}
                           className="bg-white/10 border-white/20 text-white placeholder:text-white/60 pr-12"
-                          onKeyPress={(e) => e.key === 'Enter' && handleComment(activeReel)}
+                          onKeyPress={(e) =>
+                            e.key === 'Enter' && handleComment(activeReel)
+                          }
                         />
                         <Button
                           size="sm"
@@ -387,13 +464,17 @@ const Reels = () => {
               variant="ghost"
               size="sm"
               className={`rounded-full w-12 h-12 transition-all duration-200 ${
-                currentInteractions.liked 
-                  ? 'text-red-500 bg-white/20 scale-110' 
+                currentInteractions.liked
+                  ? 'text-red-500 bg-white/20 scale-110'
                   : 'text-white hover:bg-white/20 hover:scale-105'
               }`}
               onClick={() => handleLike(activeReel)}
             >
-              <Heart className={`w-6 h-6 transition-all duration-200 ${currentInteractions.liked ? 'fill-current animate-pulse' : ''}`} />
+              <Heart
+                className={`w-6 h-6 transition-all duration-200 ${
+                  currentInteractions.liked ? 'fill-current animate-pulse' : ''
+                }`}
+              />
             </Button>
             <span className="text-white text-xs font-medium">
               {currentInteractions.likes.toLocaleString()}
@@ -420,13 +501,17 @@ const Reels = () => {
               variant="ghost"
               size="sm"
               className={`rounded-full w-12 h-12 transition-all duration-200 ${
-                currentInteractions.saved 
-                  ? 'text-yellow-500 bg-white/20 scale-110' 
+                currentInteractions.saved
+                  ? 'text-yellow-500 bg-white/20 scale-110'
                   : 'text-white hover:bg-white/20 hover:scale-105'
               }`}
               onClick={() => handleSave(activeReel)}
             >
-              <Bookmark className={`w-5 h-5 transition-all duration-200 ${currentInteractions.saved ? 'fill-current' : ''}`} />
+              <Bookmark
+                className={`w-5 h-5 transition-all duration-200 ${
+                  currentInteractions.saved ? 'fill-current' : ''
+                }`}
+              />
             </Button>
           </div>
 

@@ -1,81 +1,82 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  Search, 
-  Filter, 
-  Star, 
-  Clock, 
-  MapPin, 
-  ShoppingCart, 
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  Search,
+  Filter,
+  Star,
+  Clock,
+  MapPin,
+  ShoppingCart,
   User,
   Heart,
   Plus,
-  Minus
-} from "lucide-react";
-import { Link } from "react-router-dom";
+  Minus,
+} from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState<number>(0);
-  
+
   const categories = [
-    { name: "Pizza", emoji: "🍕" },
-    { name: "Burgers", emoji: "🍔" },
-    { name: "Sushi", emoji: "🍣" },
-    { name: "Indian", emoji: "🍛" },
-    { name: "Chinese", emoji: "🥡" },
-    { name: "Mexican", emoji: "🌮" },
-    { name: "Desserts", emoji: "🍰" },
-    { name: "Drinks", emoji: "🥤" },
+    { name: 'Pizza', emoji: '🍕' },
+    { name: 'Burgers', emoji: '🍔' },
+    { name: 'Sushi', emoji: '🍣' },
+    { name: 'Indian', emoji: '🍛' },
+    { name: 'Chinese', emoji: '🥡' },
+    { name: 'Mexican', emoji: '🌮' },
+    { name: 'Desserts', emoji: '🍰' },
+    { name: 'Drinks', emoji: '🥤' },
   ];
 
   const restaurants = [
     {
       id: 1,
-      name: "Pizza Palace",
-      cuisine: "Italian",
+      name: 'Pizza Palace',
+      cuisine: 'Italian',
       rating: 4.5,
-      deliveryTime: "25-30",
+      deliveryTime: '25-30',
       deliveryFee: 2.99,
-      image: "/placeholder.svg",
+      image: '/placeholder.svg',
       isPopular: true,
-      distance: "1.2 km"
+      distance: '1.2 km',
     },
     {
       id: 2,
-      name: "Burger Hub",
-      cuisine: "American",
+      name: 'Burger Hub',
+      cuisine: 'American',
       rating: 4.3,
-      deliveryTime: "20-25",
+      deliveryTime: '20-25',
       deliveryFee: 1.99,
-      image: "/placeholder.svg",
+      image: '/placeholder.svg',
       isPopular: false,
-      distance: "0.8 km"
+      distance: '0.8 km',
     },
     {
       id: 3,
-      name: "Spice Garden",
-      cuisine: "Indian",
+      name: 'Spice Garden',
+      cuisine: 'Indian',
       rating: 4.6,
-      deliveryTime: "30-35",
+      deliveryTime: '30-35',
       deliveryFee: 3.49,
-      image: "/placeholder.svg",
+      image: '/placeholder.svg',
       isPopular: true,
-      distance: "2.1 km"
+      distance: '2.1 km',
     },
     {
       id: 4,
-      name: "Sushi Express",
-      cuisine: "Japanese",
+      name: 'Sushi Express',
+      cuisine: 'Japanese',
       rating: 4.4,
-      deliveryTime: "35-40",
+      deliveryTime: '35-40',
       deliveryFee: 4.99,
-      image: "/placeholder.svg",
+      image: '/placeholder.svg',
       isPopular: false,
-      distance: "1.5 km"
+      distance: '1.5 km',
     },
   ];
 
@@ -87,14 +88,16 @@ const Dashboard = () => {
           <div className="flex items-center space-x-4">
             <Link to="/" className="flex items-center space-x-2">
               <div className="h-8 w-8 rounded bg-gradient-primary"></div>
-              <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">FoodieHub</span>
+              <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                FoodView
+              </span>
             </Link>
             <div className="hidden md:flex items-center space-x-2 text-sm text-muted-foreground">
               <MapPin className="w-4 h-4" />
               <span>Deliver to Home - 123 Main St</span>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <Link to="/reels">
               <Button variant="ghost" className="hidden md:inline-flex">
@@ -109,7 +112,10 @@ const Dashboard = () => {
                 </span>
               )}
             </Button>
-            <Avatar className="h-8 w-8">
+            <Avatar
+              onClick={() => navigate('/profile')}
+              className="h-8 w-8 cursor-pointer"
+            >
               <AvatarImage src="/placeholder.svg" alt="User" />
               <AvatarFallback>
                 <User className="w-4 h-4" />
@@ -125,8 +131,8 @@ const Dashboard = () => {
           <div className="flex flex-col md:flex-row gap-4 items-center">
             <div className="relative flex-1 max-w-2xl">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-              <Input 
-                placeholder="Search for restaurants, dishes, or cuisines..." 
+              <Input
+                placeholder="Search for restaurants, dishes, or cuisines..."
                 className="pl-10 h-12"
               />
             </div>
@@ -159,20 +165,32 @@ const Dashboard = () => {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold">Popular Restaurants</h2>
             <Link to="/reels">
-              <Button variant="outline" className="text-primary border-primary hover:bg-primary hover:text-primary-foreground">
+              <Button
+                variant="outline"
+                className="text-primary border-primary hover:bg-primary hover:text-primary-foreground"
+              >
                 Watch Food Reels
               </Button>
             </Link>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {restaurants.map((restaurant) => (
-              <Card key={restaurant.id} className="overflow-hidden hover:shadow-food transition-shadow cursor-pointer group">
+              <Card
+                key={restaurant.id}
+                className="overflow-hidden hover:shadow-food transition-shadow cursor-pointer group"
+              >
                 <div className="relative">
                   <div className="w-full h-48 bg-gradient-card flex items-center justify-center">
-                    <span className="text-4xl">{restaurant.cuisine === "Italian" ? "🍕" : 
-                                                  restaurant.cuisine === "American" ? "🍔" : 
-                                                  restaurant.cuisine === "Indian" ? "🍛" : "🍣"}</span>
+                    <span className="text-4xl">
+                      {restaurant.cuisine === 'Italian'
+                        ? '🍕'
+                        : restaurant.cuisine === 'American'
+                        ? '🍔'
+                        : restaurant.cuisine === 'Indian'
+                        ? '🍛'
+                        : '🍣'}
+                    </span>
                   </div>
                   {restaurant.isPopular && (
                     <Badge className="absolute top-2 left-2 bg-primary text-primary-foreground">
@@ -187,7 +205,7 @@ const Dashboard = () => {
                     <Heart className="w-4 h-4" />
                   </Button>
                 </div>
-                
+
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
@@ -198,9 +216,11 @@ const Dashboard = () => {
                       <span>{restaurant.rating}</span>
                     </div>
                   </div>
-                  
-                  <p className="text-muted-foreground text-sm mb-3">{restaurant.cuisine}</p>
-                  
+
+                  <p className="text-muted-foreground text-sm mb-3">
+                    {restaurant.cuisine}
+                  </p>
+
                   <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <div className="flex items-center space-x-1">
                       <Clock className="w-4 h-4" />
@@ -211,7 +231,7 @@ const Dashboard = () => {
                       <span>{restaurant.distance}</span>
                     </div>
                   </div>
-                  
+
                   <div className="mt-3 pt-3 border-t flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">
                       Delivery: ${restaurant.deliveryFee}
@@ -220,15 +240,19 @@ const Dashboard = () => {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => setCartItems(prev => Math.max(0, prev - 1))}
+                        onClick={() =>
+                          setCartItems((prev) => Math.max(0, prev - 1))
+                        }
                       >
                         <Minus className="w-3 h-3" />
                       </Button>
-                      <span className="w-8 text-center text-sm">{Math.max(0, cartItems)}</span>
+                      <span className="w-8 text-center text-sm">
+                        {Math.max(0, cartItems)}
+                      </span>
                       <Button
                         size="sm"
                         className="bg-gradient-primary text-primary-foreground"
-                        onClick={() => setCartItems(prev => prev + 1)}
+                        onClick={() => setCartItems((prev) => prev + 1)}
                       >
                         <Plus className="w-3 h-3" />
                       </Button>
